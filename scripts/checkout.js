@@ -1,6 +1,6 @@
 import { products } from '../data/products.js';
-import { cart, cartQuantity } from '../data/cart.js';
-document.querySelector('.centered').innerHTML = cartQuantity;
+import { cart, state } from '../data/cart.js';
+document.querySelector('.centered').innerHTML = state.cartQuantity;
 
 let checkoutHtml = '';
 
@@ -35,6 +35,7 @@ function renderCheckoutDisplay() {
         `
     });
     document.querySelector('.checkout-display').innerHTML = checkoutHtml;
+
 
 }
 renderCheckoutDisplay();

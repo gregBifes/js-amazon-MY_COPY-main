@@ -1,2 +1,6 @@
-export let cartQuantity = JSON.parse(localStorage.getItem('cartQuantity')) || 0;
 export let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+export const state = {
+    cartQuantity: JSON.parse(localStorage.getItem('cartQuantity')) || 0
+};
+

@@ -1,7 +1,7 @@
 import { products } from '../data/products.js';
-import { cart, cartQuantity } from '../data/cart.js';
+import { cart, state } from '../data/cart.js';
 
-document.querySelector('.centered').innerHTML = cartQuantity;
+document.querySelector('.centered').innerHTML = state.cartQuantity;
 
 let listHTML = '';
 
@@ -63,9 +63,9 @@ addToCartBtns.forEach(button => {
 
                 })
             }
-            cartQuantity = 0;
+            state.cartQuantity = 0;
             cart.forEach(element => {
-                cartQuantity += Number(element.quantity);
+                state.cartQuantity += Number(element.quantity);
             });
 
             localStorage.setItem('cart', JSON.stringify(cart));
