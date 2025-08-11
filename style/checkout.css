@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Times New Roman', Times, serif;
 }
 
 .container {
@@ -74,8 +75,17 @@
 }
 
 .delivery-price {
-    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.9rem;
     color: rgb(123, 121, 121);
+}
+
+.delivery-price input {
+    height: 0.9rem;
+    width: 0.9rem;
+    margin-left: 0.4rem;
 }
 
 .order-summary {
@@ -87,4 +97,14 @@
 .order-summary div {
     display: flex;
     justify-content: space-between;
+}
+
+.place-your-order-btn {
+    padding: 0.5rem 0.2rem;
+    border-radius: 1rem;
+    border: none;
+    background-color: darkorange;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
 }

@@ -1,6 +1,7 @@
 import { products } from '../data/products.js';
 import { cart, state } from '../data/cart.js';
 
+state.cartQuantity = JSON.parse(localStorage.getItem('state.cartQuantity'));
 document.querySelector('.centered').innerHTML = state.cartQuantity;
 
 let listHTML = '';
@@ -43,7 +44,7 @@ addToCartBtns.forEach(button => {
         const productId = button.dataset.productId;
         const product = products.find(product => product.id === productId);
         const quantity = document.querySelector(`.js-quantity-selector-${productId}`).value;
-
+        console.log(quantity);
         if (product) {
             const existingItem = cart.find(product => product.id === productId);
             if (existingItem) {
@@ -63,6 +64,7 @@ addToCartBtns.forEach(button => {
 
                 })
             }
+            console.log(state.cartQuantity);
             state.cartQuantity = 0;
             cart.forEach(element => {
                 state.cartQuantity += Number(element.quantity);
@@ -70,9 +72,8 @@ addToCartBtns.forEach(button => {
 
             localStorage.setItem('cart', JSON.stringify(cart));
 
-            localStorage.setItem('cartQuantity', JSON.stringify(cartQuantity));
-            console.log(localStorage);
-            document.querySelector('.centered').innerHTML = cartQuantity;
+            localStorage.setItem('state.cartQuantity', JSON.stringify(state.cartQuantity));
+            document.querySelector('.centered').innerHTML = state.cartQuantity;
         }
     })
 });
