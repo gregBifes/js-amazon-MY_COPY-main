@@ -1,5 +1,5 @@
 import { products } from '../data/products.js';
-import { cart, state } from '../data/cart.js';
+import { cart, countCartQuantity, state } from '../data/cart.js';
 
 state.cartQuantity = JSON.parse(localStorage.getItem('state.cartQuantity'));
 document.querySelector('.centered').innerHTML = state.cartQuantity;
@@ -53,27 +53,11 @@ addToCartBtns.forEach(button => {
             } else {
                 cart.push({
                     id: product.id,
-                    image: product.image,
-                    name: product.name,
-                    rating: {
-                        stars: product.rating.stars,
-                        count: product.rating.count
-                    },
-                    priceCents: product.priceCents,
                     quantity: quantity
-
                 })
             }
-            console.log(state.cartQuantity);
-            state.cartQuantity = 0;
-            cart.forEach(element => {
-                state.cartQuantity += Number(element.quantity);
-            });
-
+            countCartQuantity();
             localStorage.setItem('cart', JSON.stringify(cart));
-
-            localStorage.setItem('state.cartQuantity', JSON.stringify(state.cartQuantity));
-            document.querySelector('.centered').innerHTML = state.cartQuantity;
         }
     })
 });

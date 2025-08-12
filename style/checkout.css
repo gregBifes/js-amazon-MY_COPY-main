@@ -58,6 +58,7 @@
 .product-quantity {}
 
 .product-quantity a {
+    cursor: pointer;
     text-decoration: none;
     color: rgb(26, 163, 248);
 }
