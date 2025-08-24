@@ -1,21 +1,18 @@
-import dayjs from 'dayjs';
-const today = dayjs();
-console.log(today);
 export const deliveryOptions = [
     {
-        id: '1',
-        deliveryTime: dayjs(''),
-        deliveryPriceCents: ''
+        id: 0,
+        deliveryTime: 7,
+        deliveryPriceCents: 'FREE'
     },
     {
-        id: '2',
-        deliveryTime: '',
-        deliveryPriceCents: ''
+        id: 1,
+        deliveryTime: 3,
+        deliveryPriceCents: 499
     },
     {
-        id: '3',
-        deliveryTime: '',
-        deliveryPriceCents: ''
+        id: 2,
+        deliveryTime: 1,
+        deliveryPriceCents: 999
     }
 
 ]

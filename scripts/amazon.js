@@ -7,6 +7,7 @@ document.querySelector('.centered').innerHTML = state.cartQuantity;
 let listHTML = '';
 
 products.forEach(product => {
+
     listHTML += `
     <div class="product">
         <div class="product-image-container"><img src="${product.image}"></div>
@@ -16,8 +17,8 @@ products.forEach(product => {
             <div class="product-rating-count">${product.rating.count}</div>
         </div>
         <div class="product-price">$${(product.priceCents / 100).toFixed(2)}</div >
-        <div class="product-quantity">
-            <select class="js-quantity-selector-${product.id}">
+        <div class="product-quantity-${product.id} product-quantity-container">
+            <select class="js-quantity-selector-${product.id} quantity-selector">
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -53,13 +54,31 @@ addToCartBtns.forEach(button => {
             } else {
                 cart.push({
                     id: product.id,
-                    quantity: quantity
+                    quantity: quantity,
+                    deliveryId: 0
                 })
             }
             countCartQuantity();
             localStorage.setItem('cart', JSON.stringify(cart));
         }
+
+        displayAddedText(button);
     })
 });
+
+function displayAddedText(button) {
+    const productId = button.dataset.productId;
+    const productToAddText = document.querySelector(`.product-quantity-${productId}`);
+    const div = document.createElement('div');
+    div.innerHTML = `<p style="font-weight:bold; font-size:1rem; color: green;"><i class="fa-solid fa-circle-check"></i>Added</p>`;
+    console.log(div);
+
+    productToAddText.appendChild(div);
+
+    setTimeout(() => {
+        div.remove();
+    }, 1500)
+
+}
 
 
