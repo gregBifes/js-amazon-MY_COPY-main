@@ -83,3 +83,13 @@
 .text-hide {
     visibility: collapse;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+    color: darkgreen;
+    font-weight: bold;
+}

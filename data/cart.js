@@ -13,19 +13,10 @@ export function updateCart(updateLink) {
     const cartItem = cart[index];
 
     const inputQuantityElement = document.querySelector(`.js-input-${itemId}`);
-    const updateLinkElement = document.querySelector(`.js-update-btns-${itemId}`);
-    const deleteLinkElement = document.querySelector(`.js-delete-btns-${itemId}`);
 
-    inputQuantityElement.style.visibility = 'visible';
-    // inputQuantityElement.style.postion = 'absolut';
+
+    inputQuantityElement.classList.add('visible');
     inputQuantityElement.style.display = 'inline';
-    updateLinkElement.style.visibility = 'hidden';
-    deleteLinkElement.style.visibility = 'hidden';
-
-
-
-
-    //Nadać nową wartość z texta inputa którego wyświetlić w miejscu updateLink
 
     inputQuantityElement.addEventListener('keydown', (event) => {
         if (event.key === 'Enter') {

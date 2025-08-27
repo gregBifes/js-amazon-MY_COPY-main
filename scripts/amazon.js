@@ -29,6 +29,7 @@ products.forEach(product => {
                 <option value="8">8</option>
                 <option value="9">9</option>
             </select>
+            <p class="js-display-add-${product.id} hidden"font-weight:bold; font-size:1rem; color: green;"><i class="fa-solid fa-circle-check"></i>Added</p>
         </div>
         <button class="js-add-to-cart-button add-to-cart-button"
             data-product-id="${product.id}">
@@ -41,6 +42,8 @@ document.querySelector('.product-container').innerHTML = listHTML;
 const addToCartBtns = document.querySelectorAll('.js-add-to-cart-button');
 
 addToCartBtns.forEach(button => {
+    let addedMessageTimeoutId;
+
     button.addEventListener('click', () => {
         const productId = button.dataset.productId;
         const product = products.find(product => product.id === productId);
@@ -61,24 +64,24 @@ addToCartBtns.forEach(button => {
             countCartQuantity();
             localStorage.setItem('cart', JSON.stringify(cart));
         }
+        const displayText = document.querySelector(`.js-display-add-${productId}`);
 
-        displayAddedText(button);
+        displayText.classList.add('visible');
+
+        if (addedMessageTimeoutId) {
+            clearTimeout(addedMessageTimeoutId);
+        }
+
+        const timeOutId = setTimeout(() => {
+            displayText.classList.remove('visible');
+        }, 1500)
+
+        addedMessageTimeoutId = timeOutId;
     })
 });
 
-function displayAddedText(button) {
-    const productId = button.dataset.productId;
-    const productToAddText = document.querySelector(`.product-quantity-${productId}`);
-    const div = document.createElement('div');
-    div.innerHTML = `<p style="font-weight:bold; font-size:1rem; color: green;"><i class="fa-solid fa-circle-check"></i>Added</p>`;
-    console.log(div);
 
-    productToAddText.appendChild(div);
-
-    setTimeout(() => {
-        div.remove();
-    }, 1500)
-
-}
+// const div = document.createElement('div');
+// div.innerHTML = `<p style="font-weight:bold; font-size:1rem; color: green;"><i class="fa-solid fa-circle-check"></i>Added</p>`;
 
 

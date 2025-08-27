@@ -131,3 +131,13 @@
     height: 1rem;
     width: 2rem;
 }
+
+.hidden {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+    color: darkgreen;
+    font-weight: bold;
+}
