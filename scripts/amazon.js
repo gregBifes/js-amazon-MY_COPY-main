@@ -58,7 +58,7 @@ addToCartBtns.forEach(button => {
                 cart.push({
                     id: product.id,
                     quantity: quantity,
-                    deliveryId: 0
+                    deliveryOptionId: 0
                 })
             }
             countCartQuantity();

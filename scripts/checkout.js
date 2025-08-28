@@ -1,5 +1,7 @@
 import { deliveryOptions, products } from '../data/products.js';
 import { cart, state, updateCart, deleteFromCart, countCartQuantity, calculateCartPrice } from '../data/cart.js';
+import dayjs from "https://unpkg.com/dayjs@latest/esm/index.js";
+
 
 state.cartQuantity = JSON.parse(localStorage.getItem('state.cartQuantity'));
 
@@ -17,11 +19,11 @@ export function renderCheckoutDisplay() {
         const productId = product.id;
         const index = products.findIndex(item => item.id === productId);
         const today = dayjs();
-
+        console.log(product.deliveryOptionId);
         checkoutHtml += `
         <div class="product-container">
             <div class="product-image-container">
-                <p class="chosen-delivery-date-${product.id}"></p>
+                <p class="chosen-delivery-date-${product.id}">${today.add(deliveryOptions[product.deliveryOptionId].deliveryTime, 'day').format('dddd DD MMMM')}</p>
                 <img src="${products[index].image}">
                 </div>
             <div class="product-description">
@@ -37,17 +39,17 @@ export function renderCheckoutDisplay() {
                 <p class="title">Choose a delivery option:</p>
                 <div>
                     <div>
-                        <p id="0" class="delivery-date-${product.id}">${today.add(deliveryOptions[0].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">FREE - Shipping <input <input class="radio-input" data-product-id="${0}" name="delivery-date-check-${products[index].name}" type="radio"/></p>
+                        <p id="id-0" class="delivery-date-${product.id}-0">${today.add(deliveryOptions[0].deliveryTime, 'day').format('dddd DD MMMM')}</p>
+                        <p class="delivery-price">FREE - Shipping <input <input class="radio-input" data-product-id="${product.id}-0" name="delivery-date-check-${products[index].name}" checked type="radio"/></p>
                         
                     </div>
                     <div>
-                        <p id="1" class="delivery-date-${product.id}">${today.add(deliveryOptions[1].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">$4.99 - Shipping <input class="radio-input" data-product-id="${1}" name="delivery-date-check-${products[index].name}" type="radio"/></p>
+                        <p id="id-1" class="delivery-date-${product.id}-1">${today.add(deliveryOptions[1].deliveryTime, 'day').format('dddd DD MMMM')}</p>
+                        <p class="delivery-price">$4.99 - Shipping <input class="radio-input" data-product-id="${product.id}-1" name="delivery-date-check-${products[index].name}" type="radio"/></p>
                     </div>
                     <div>
-                        <p id="2" class="delivery-date-${product.id}">${today.add(deliveryOptions[2].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">$9.99 - Shipping <input class="radio-input" data-product-id="${2}" name="delivery-date-check-${products[index].name}" type="radio"/></p>
+                        <p id="id-2" class="delivery-date-${product.id}-2">${today.add(deliveryOptions[2].deliveryTime, 'day').format('dddd DD MMMM')}</p>
+                        <p class="delivery-price">$9.99 - Shipping <input class="radio-input" data-product-id="${product.id}-2" name="delivery-date-check-${products[index].name}" type="radio"/></p>
                     </div>
                 </div>
             </div>
@@ -77,12 +79,13 @@ export function renderCheckoutDisplay() {
 
     const radioInputs = document.querySelectorAll('.radio-input');
     radioInputs.forEach(radioElement => {
-        radioElement.addEventListener('change', () => {
+        radioElement.addEventListener('click', () => {
             const productId = radioElement.dataset.productId;
-            const chosenDate = document.querySelector(`.chosen-delivery-date-${productId}`);
-            const chosedOption = document.querySelector(`#${productId}`);
-            console.log(productId);
-            chosenDate.textContent = chosedOption.textContent;
+            const productIdLength = String(productId).length;
+            const productIdsliced = String(productId).slice(0, productIdLength - 2);
+            const chosenDate = document.querySelector(`.delivery-date-${productId}`);
+            const displayedDate = document.querySelector(`.chosen-delivery-date-${productIdsliced}`);
+            displayedDate.innerHTML = chosenDate.textContent;
 
         })
     });
