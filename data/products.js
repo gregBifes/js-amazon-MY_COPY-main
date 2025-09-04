@@ -1,23 +1,3 @@
-export const deliveryOptions = [
-    {
-        id: 0,
-        deliveryTime: 7,
-        deliveryPriceCents: 'FREE'
-    },
-    {
-        id: 1,
-        deliveryTime: 3,
-        deliveryPriceCents: 499
-    },
-    {
-        id: 2,
-        deliveryTime: 1,
-        deliveryPriceCents: 999
-    }
-
-]
-
-
 export const products = [
     {
         id: "e43638ce-6aa0-4b85-b27f-e1d07eb678c6",

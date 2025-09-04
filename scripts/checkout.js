@@ -1,9 +1,11 @@
-import { deliveryOptions, products } from '../data/products.js';
+import { products } from '../data/products.js';
+import { deliveryOptions } from '../data/deliveryOptions.js';
 import { cart, state, updateCart, deleteFromCart, countCartQuantity, calculateCartPrice } from '../data/cart.js';
 import dayjs from "https://unpkg.com/dayjs@latest/esm/index.js";
 
 
 state.cartQuantity = JSON.parse(localStorage.getItem('state.cartQuantity'));
+
 
 document.addEventListener('cart-updated', () => {
     countCartQuantity();
@@ -18,12 +20,13 @@ export function renderCheckoutDisplay() {
     cart.forEach(product => {
         const productId = product.id;
         const index = products.findIndex(item => item.id === productId);
+        const indexCart = cart.findIndex(item => item.id === productId);
+        let matchingProduct = cart[indexCart];
         const today = dayjs();
-        console.log(product.deliveryOptionId);
         checkoutHtml += `
         <div class="product-container">
             <div class="product-image-container">
-                <p class="chosen-delivery-date-${product.id}">${today.add(deliveryOptions[product.deliveryOptionId].deliveryTime, 'day').format('dddd DD MMMM')}</p>
+                <p class="chosen-delivery-date-${product.id}">${today.add(deliveryOptions[0].deliveryTime, 'day').format('dddd DD MMMM')}</p>
                 <img src="${products[index].image}">
                 </div>
             <div class="product-description">
@@ -37,21 +40,7 @@ export function renderCheckoutDisplay() {
             </div>
             <div class="delivery-container">
                 <p class="title">Choose a delivery option:</p>
-                <div>
-                    <div>
-                        <p id="id-0" class="delivery-date-${product.id}-0">${today.add(deliveryOptions[0].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">FREE - Shipping <input <input class="radio-input" data-product-id="${product.id}-0" name="delivery-date-check-${products[index].name}" checked type="radio"/></p>
-                        
-                    </div>
-                    <div>
-                        <p id="id-1" class="delivery-date-${product.id}-1">${today.add(deliveryOptions[1].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">$4.99 - Shipping <input class="radio-input" data-product-id="${product.id}-1" name="delivery-date-check-${products[index].name}" type="radio"/></p>
-                    </div>
-                    <div>
-                        <p id="id-2" class="delivery-date-${product.id}-2">${today.add(deliveryOptions[2].deliveryTime, 'day').format('dddd DD MMMM')}</p>
-                        <p class="delivery-price">$9.99 - Shipping <input class="radio-input" data-product-id="${product.id}-2" name="delivery-date-check-${products[index].name}" type="radio"/></p>
-                    </div>
-                </div>
+                ${deliveryOptionsHTML(matchingProduct)}
             </div>
         </div >
         `
@@ -61,6 +50,7 @@ export function renderCheckoutDisplay() {
     const deleteBtns = document.querySelectorAll('.js-delete-btns');
     deleteBtns.forEach(deleteLink => {
         deleteLink.addEventListener('click', () => {
+            console.log('delete btn');
             deleteFromCart(deleteLink);
             countCartQuantity();
             renderCheckoutDisplay();
@@ -86,16 +76,49 @@ export function renderCheckoutDisplay() {
             const chosenDate = document.querySelector(`.delivery-date-${productId}`);
             const displayedDate = document.querySelector(`.chosen-delivery-date-${productIdsliced}`);
             displayedDate.innerHTML = chosenDate.textContent;
+            const index = cart.findIndex(item => item.id === productIdsliced);
+
+            cart[index].deliveryOptionId = productId[productIdLength - 1];
+            console.log('po zmianie dostawy:', cart[index]);
+            localStorage.setItem('cart', JSON.stringify(cart));
+
 
         })
     });
 
-    localStorage.setItem('cart', JSON.stringify(cart));
+
+    function deliveryOptionsHTML(matchingProduct) {
+        let html = '';
+        deliveryOptions.forEach((deliveryOption) => {
+            const today = dayjs();
+            const deliveryDate = today.add(deliveryOption.deliveryTime, 'days');
+            const dateString = deliveryDate.format('dddd, MMMM, D');
+            const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${(deliveryOption.priceCents / 100).toFixed(2)}`;
+            if (deliveryOption.id === matchingProduct.deliveryOptionId) {
+                html += `
+                <div>
+                    <p id="id-${deliveryOption.id}" class="delivery-date-${matchingProduct.id}-${deliveryOption.id}">${dateString}</p>
+                    <p class="delivery-price">${priceString} - Shipping <input <input class="radio-input" data-product-id="${matchingProduct.id}-${deliveryOption.id}" name="delivery-date-check-${matchingProduct.id}"checked type="radio"/></p>
+                </div>    
+                `
+            }
+            else {
+                html += `
+                <div>
+                    <p id="id-${deliveryOption.id}" class="delivery-date-${matchingProduct.id}-${deliveryOption.id}">${dateString}</p>
+                    <p class="delivery-price">${priceString} - Shipping <input <input class="radio-input" data-product-id="${matchingProduct.id}-${deliveryOption.id}" name="delivery-date-check-${matchingProduct.id}" type="radio"/></p>
+                </div>    
+                `
+            }
+
+        }
+        )
+        return html;
+    }
 }
 countCartQuantity();
 renderCheckoutDisplay();
 calculateCartPrice();
-
 
 
 

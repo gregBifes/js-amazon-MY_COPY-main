@@ -24,6 +24,7 @@ export function updateCart(updateLink) {
             document.dispatchEvent(new CustomEvent('cart-updated'));
         }
     });
+    localStorage.setItem('cart', JSON.stringify(cart));
 }
 
 
@@ -31,6 +32,9 @@ export function deleteFromCart(deleteLink) {
     const itemId = deleteLink.dataset.productId;
     const index = cart.findIndex(item => item.id === itemId);
     cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+
 }
 
 export function countCartQuantity() {
@@ -41,6 +45,9 @@ export function countCartQuantity() {
     });
     localStorage.setItem('state.cartQuantity', JSON.stringify(state.cartQuantity));
     document.querySelector('.centered').innerHTML = state.cartQuantity;
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+
 
 }
 
